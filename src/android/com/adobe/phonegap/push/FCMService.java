@@ -77,18 +77,6 @@ public class FCMService extends FirebaseMessagingService implements PushConstant
     String from = message.getFrom();
     Log.d(LOG_TAG, "onMessage - from: " + from);
 
-    if(message.getData().size() > 0){
-      try{
-      if (MobiComPushReceiver.isMobiComPushNotification(message.getData())) {
-          Log.i("ApplozicPushData", "Applozic notification processing...");
-          MobiComPushReceiver.processMessageAsync(this, message.getData());
-          return;
-      }}catch(Exception e){
-          e.printStackTrace();
-      }
-  }
-
-
     Bundle extras = new Bundle();
 
     if (message.getNotification() != null) {
@@ -141,6 +129,16 @@ public class FCMService extends FirebaseMessagingService implements PushConstant
 
         showNotificationIfPossible(applicationContext, extras);
       }
+    }
+    if(message.getData().size() > 0){
+        try{
+        if (MobiComPushReceiver.isMobiComPushNotification(message.getData())) {
+            Log.i("ApplozicPushData", "Applozic notification processing...");
+            MobiComPushReceiver.processMessageAsync(this, message.getData());
+            return;
+        }}catch(Exception e){
+            e.printStackTrace();
+        }
     }
   }
 
